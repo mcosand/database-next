@@ -1,0 +1,9 @@
+appsettings.local.json
+*.xproj.user
+
+project.lock.json
+
+.vs
+bin/
+node_modules/
+src/website/wwwroot/lib/

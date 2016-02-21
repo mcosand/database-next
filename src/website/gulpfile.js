@@ -27,19 +27,42 @@ gulp.task("clean:css", function (cb) {
 });
 
 gulp.task("clean", ["clean:js", "clean:css"]);
-
+/*
 gulp.task("min:js", function () {
     return gulp.src([paths.js, "!" + paths.minJs], { base: "." })
         .pipe(concat(paths.concatJsDest))
         .pipe(uglify())
         .pipe(gulp.dest("."));
 });
-
-gulp.task("min:css", function () {
+*/
+gulp.task("css", function () {
     return gulp.src([paths.css, "!" + paths.minCss])
         .pipe(concat(paths.concatCssDest))
         .pipe(cssmin())
         .pipe(gulp.dest("."));
 });
-
+/*
 gulp.task("min", ["min:js", "min:css"]);
+*/
+gulp.task("js:lib", function (cb) {
+  return gulp.src([
+    paths.webroot + "lib/angular/angular.min.js",
+    paths.webroot + "lib/angular-animate/angular-animate.min.js",
+    paths.webroot + "lib/angular-aria/angular-aria.min.js",
+    paths.webroot + "lib/angular-material/angular-material.min.js"
+  ])
+  .pipe(concat(paths.webroot + "js/lib.min.js"))
+  .pipe(gulp.dest("."));
+})
+
+gulp.task("js:app", function (cb) {
+  return gulp.src([
+    paths.webroot + "js/site.js"
+  ])
+  .pipe(concat(paths.webroot + "js/site.min.js"))
+  .pipe(uglify())
+  .pipe(gulp.dest("."));
+})
+gulp.task("js", ["js:lib", "js:app"]);
+
+gulp.task("default", ["js", "css"]);

@@ -1,68 +1,56 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Config
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>@ViewData["Title"] - website</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@ViewData["Title"] - @(Config["names::siteTitle"] ?? "SAR Database")</title>
 
-        <environment names="Development">
-            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-            <link rel="stylesheet" href="~/css/site.css" />
-        </environment>
-        <environment names="Staging,Production">
-            <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/css/bootstrap.min.css"
-                  asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-                  asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-            <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        </environment>
-    </head>
-    <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a asp-controller="Home" asp-action="Index" class="navbar-brand">website</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a asp-controller="Home" asp-action="About">About</a></li>
-                        <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    </ul>
-                    @await Html.PartialAsync("_LoginPartial")
-                </div>
-            </div>
-        </div>
-        <div class="container body-content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; 2016 - website</p>
-            </footer>
-        </div>
+  <environment names="Development">
+    <link rel="stylesheet" href="~/lib/angular-material/angular-material.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+  </environment>
+  <environment names="Staging,Production">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css"
+          asp-fallback-href="~/lib/angular-material/angular-material.min.css"
+          asp-fallback-test-class="md-ripple" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+          asp-fallback-href="~/lib/font-awesome/css/font-awesome.min.css"
+          asp-fallback-test-class="fa-2x" asp-fallback-test-property="font-size" asp-fallback-test-value="2em" />
+    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+  </environment>
+  <environment names="Development">
+    <script src="~/lib/angular/angular.js" asp-append-version="true"></script>
+    <script src="~/lib/angular-animate/angular-animate.js" asp-append-version="true"></script>
+    <script src="~/lib/angular-aria/angular-aria.js" asp-append-version="true"></script>
+    <script src="~/lib/angular-messages/angular-messages.js" asp-append-version="true"></script>
+    <script src="~/lib/angular-material/angular-material.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+  </environment>
+  <environment names="Staging,Production">
+    <script src="~/js/lib.min.js" asp-append-version="true"></script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+  </environment>
+</head>
+<body ng-app="sarDatabase">
+  <md-toolbar class="md-primary" ng-controller="HeaderCtrl">
+    <div class="md-toolbar-tools ng-cloak">
+      <md-button class="md-icon-button" aria-label="Menu">
+        <i class="fa fa-bars"></i>
+      </md-button>
+      <h2>@(Config["names::siteTitle"] ?? "SAR Database")</h2>
+      <span flex></span>
+      @await Html.PartialAsync("_LoginPartial")
+    </div>
+  </md-toolbar>
+  <md-content class="body-content">
+    @RenderBody()
+  </md-content>
+  <footer>
+    <p>&copy; 2016 - @(Config["names::siteTitle"] ?? "SAR Database") - This project is <a href="https://github.com/mcosand/database-next/">open source</a>.</p>
+  </footer>
 
-        <environment names="Development">
-            <script src="~/lib/jquery/dist/jquery.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-            <script src="~/js/site.js" asp-append-version="true"></script>
-        </environment>
-        <environment names="Staging,Production">
-            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js"
-                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                    asp-fallback-test="window.jQuery">
-            </script>
-            <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/bootstrap.min.js"
-                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
-            </script>
-            <script src="~/js/site.min.js" asp-append-version="true"></script>
-        </environment>
-
-        @RenderSection("scripts", required: false)
-    </body>
+  @RenderSection("scripts", required: false)
+</body>
 </html>

@@ -2,21 +2,35 @@
 
 @if (User.IsSignedIn())
 {
-    <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
-        <ul class="nav navbar-nav navbar-right">
+    <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm">
+        <ul>
             <li>
                 <a asp-controller="Manage" asp-action="Index" title="Manage">Hello @User.GetUserName()!</a>
             </li>
             <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button>
+                <button type="submit">Log off</button>
             </li>
         </ul>
     </form>
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a asp-controller="Account" asp-action="Login">Log in</a></li>
-    </ul>
+  <md-menu md-position-mode="target-right target" class="squish-left">
+    <md-button aria-label="Open login menu" class="md-icon-button" ng-click="openLoginMenu($mdOpenMenu, $event)">
+      <i class="fa fa-user"></i>
+    </md-button>
+    <md-menu-content width="4">
+      <md-menu-item>
+        <md-button ng-click="ctrl.login($event)">
+          <i class="fa fa-unlock"></i>
+          Login
+        </md-button>
+      </md-menu-item>
+      <md-menu-item>
+        <md-button ng-click="ctrl.register($event)">
+          <i class="fa fa-user-plus"></i> Register
+        </md-button>
+      </md-menu-item>
+    </md-menu-content>
+  </md-menu>
 }

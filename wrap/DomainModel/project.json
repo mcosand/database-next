@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net451": {
+      "wrappedProject": "../../src/DomainModel/DomainModel.csproj",
+      "bin": {
+        "assembly": "../../src/DomainModel/obj/{configuration}/DomainModel.dll",
+        "pdb": "../../src/DomainModel/obj/{configuration}/DomainModel.pdb"
+      }
+    }
+  }
+}

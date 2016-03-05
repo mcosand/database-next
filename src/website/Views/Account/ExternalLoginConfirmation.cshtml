@@ -1,35 +1,85 @@
 ﻿@model ExternalLoginConfirmationViewModel
 @{
-    ViewData["Title"] = "Register";
+  ViewData["Title"] = "Register";
+  ViewData["NoMenu"] = true;
 }
 
-<h2>@ViewData["Title"].</h2>
-<h3>Associate your @ViewData["LoginProvider"] account.</h3>
-
-<form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-    <h4>Association Form</h4>
+<md-content flex layout-padding layout="row">
+  <div flex-gt-xs="80" flex-gt-sm="60" ng-controller="Account_RegisterCtrl">
+    <h2>Register New @ViewData["LoginProvider"] Login</h2>
     <hr />
-    <div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>
+    @*<form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">*@
+    @*<div asp-validation-summary="ValidationSummary.All" class="text-danger"></div>*@
 
-    <p class="text-info">
-        You've successfully authenticated with <strong>@ViewData["LoginProvider"]</strong>.
-        Please enter a user name for this site below and click the Register button to finish
-        logging in.
+    <p>
+      You've successfully authenticated with <strong>@ViewData["LoginProvider"]</strong>.
+      Before you can continue you we need to know a little bit more about you.
     </p>
-    <div class="form-group">
-        <label asp-for="Email" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-default">Register</button>
-        </div>
-    </div>
-</form>
 
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}
+    <div class="step">
+      <div>
+        <div class="circle">1</div>
+        <div class="line"></div>
+      </div>
+      <div>
+        <div class="title">Account Information</div>
+        <div class="body">
+          <form name="accountInfoForm" novalidate>
+            <md-radio-group ng-model="step1.mode">
+              <md-radio-button value="member" ng-disabled="disabledStep(1)">I am a registered member.</md-radio-button>
+              <md-radio-button value="invite" ng-disabled="disabledStep(1)">I have an invitation code.</md-radio-button>
+            </md-radio-group>
+
+            <md-input-container class="md-block" ng-show="step1.mode == 'invite'">
+              <label>Invitation Code</label>
+              <input name="inviteCode" ng-model="step1.inviteCode" ng-required="step1.mode == 'invite' && step == 1" ng-disabled="disabledStep(1)" />
+              <div ng-messages="accountInfoForm.inviteCode.$error">
+                <div ng-message="required">Required.</div>
+              </div>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+              <label>Email Address</label>
+              <input name="email" type="email" minlength="5" maxlength="100" ng-model="step1.email" ng-required="step == 1" ng-disabled="disabledStep(1)">
+              <div ng-messages="accountInfoForm.email.$error">
+                <div ng-message="required">Required.</div>
+              </div>
+            </md-input-container>
+
+            <div>We need to verify that this is your email address. Use the button below to send a verification code to your email.</div>
+            <md-button type="submit" class="md-raised md-primary" ng-disabled="disabledStep(1)" ng-click="sendCode()">
+            <i class="fa fa-spin fa-spinner" ng-class="{hidden: !(working && step == 1)}"></i> Email My Code</md-button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div>
+        <div class="circle">2</div>
+        <div class="line"></div>
+      </div>
+      <div>
+        <div class="title">Email Verification</div>
+        <div class="body">
+          <form name="verifyForm" novalidate>
+            <p>
+              When you have received your verification code in your email, copy it here and press the button to continue.
+            </p>
+            <md-input-container class="md-block">
+              <label>Verification Code</label>
+              <input name="verify" ng-model="step2.verify" ng-required="step == 2" ng-disabled="disabledStep(2)" required>
+              <div ng-messages="verifyForm.verify.$error">
+                <div ng-message="required">Required.</div>
+              </div>
+            </md-input-container>
+            <md-button type="submit" class="md-raised md-primary" ng-disabled="disabledStep(2)" ng-click="verifyCode()">
+              <i class="fa fa-spin fa-spinner" ng-class="{hidden: !(working && step == 2)}"></i> Verify My Code</md-button>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+
+
+  </div>
+</md-content>

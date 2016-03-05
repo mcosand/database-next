@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Mvc;
 
-namespace website.Services
+namespace website.Controllers
 {
-    public interface ISmsSender
+    public abstract class ControllerBase : Controller
     {
-        Task SendSmsAsync(string number, string message);
+     
     }
 }

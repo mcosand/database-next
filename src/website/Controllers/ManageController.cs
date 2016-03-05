@@ -7,9 +7,9 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using website.Models;
-using website.Services;
 using website.ViewModels.Manage;
+using Kcsara.Database.Services;
+using Kcsara.Database.Website.Identity;
 
 namespace website.Controllers
 {

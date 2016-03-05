@@ -2,8 +2,12 @@ appsettings.local.json
 *.xproj.user
 
 project.lock.json
+PublishProfiles/
 
 .vs
+artifacts/
+packages/
 bin/
+obj/
 node_modules/
 src/website/wwwroot/lib/

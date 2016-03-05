@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 
-namespace website.Controllers
+namespace Kcsara.Database.Website.Controllers
 {
     public class HomeController : Controller
     {

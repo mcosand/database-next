@@ -21,14 +21,14 @@ else
     </md-button>
     <md-menu-content width="4">
       <md-menu-item>
-        <md-button ng-click="ctrl.login($event)">
-          <i class="fa fa-unlock"></i>
+        <md-button href="@Url.Content("~/Account/Login")">
+          <md-icon md-font-icon="fa-unlock" class="fa"></md-icon>
           Login
         </md-button>
       </md-menu-item>
       <md-menu-item>
-        <md-button ng-click="ctrl.register($event)">
-          <i class="fa fa-user-plus"></i> Register
+        <md-button ng-click="register($event)">
+          <md-icon md-font-icon="fa-user-plus" class="fa"></md-icon> Register
         </md-button>
       </md-menu-item>
     </md-menu-content>

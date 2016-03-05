@@ -1,11 +1,14 @@
 ﻿@inject Microsoft.Extensions.Configuration.IConfiguration Config
+@{ 
+  
+}
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>@ViewData["Title"] - @(Config["names::siteTitle"] ?? "SAR Database")</title>
-
+  <script type="text/javascript">window.appRoot = '@Url.Content("~/")';</script>
   <environment names="Development">
     <link rel="stylesheet" href="~/lib/angular-material/angular-material.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" asp-append-version="true" />
@@ -34,17 +37,20 @@
   </environment>
 </head>
 <body ng-app="sarDatabase">
-  <md-toolbar class="md-primary" ng-controller="HeaderCtrl">
+  <md-toolbar class="md-primary md-whiteframe-1dp" md-scroll-shrink ng-controller="HeaderCtrl">
     <div class="md-toolbar-tools ng-cloak">
+      @if (ViewBag.NoMenu == null)
+      {
       <md-button class="md-icon-button" aria-label="Menu">
         <i class="fa fa-bars"></i>
       </md-button>
+      }
       <h2>@(Config["names::siteTitle"] ?? "SAR Database")</h2>
       <span flex></span>
       @await Html.PartialAsync("_LoginPartial")
     </div>
   </md-toolbar>
-  <md-content class="body-content">
+  <md-content class="body-content md-hue-1" flex layout="column">
     @RenderBody()
   </md-content>
   <footer>
@@ -52,5 +58,6 @@
   </footer>
 
   @RenderSection("scripts", required: false)
+  <form id="antiForgery" asp-antiforgery="true" class="hidden"></form>
 </body>
 </html>

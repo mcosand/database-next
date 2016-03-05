@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net451": {
+      "wrappedProject": "../../src/DataModel/DataModel.csproj",
+      "bin": {
+        "assembly": "../../src/DataModel/obj/{configuration}/DataModel.dll",
+        "pdb": "../../src/DataModel/obj/{configuration}/DataModel.pdb"
+      },
+      "dependencies": {
+        "EntityFramework": "6.1.3"
+      }
+    }
+  }
+}

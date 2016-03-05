@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Kcsara.Database.Services;
+using Kcsara.Database.Website.Identity;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -9,15 +11,24 @@ using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using website.Models;
-using website.Services;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
-namespace website
+namespace Kcsara.Database.Website
 {
   public class Startup
   {
     public Startup(IHostingEnvironment env)
     {
+      JsonConvert.DefaultSettings = () =>
+      {
+        var settings = new JsonSerializerSettings();
+        settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        settings.Converters.Add(new StringEnumConverter());
+        return settings;
+      };
+
       // Set up configuration sources.
       var builder = new ConfigurationBuilder()
           .AddJsonFile("appsettings.json")
@@ -46,14 +57,12 @@ namespace website
               options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
       services.AddIdentity<ApplicationUser, IdentityRole>()
+          .AddUserManager<SarUserManager>()
           .AddEntityFrameworkStores<ApplicationDbContext>()
           .AddDefaultTokenProviders();
 
       services.AddMvc();
-
-      // Add application services.
-      services.AddTransient<IEmailSender, AuthMessageSender>();
-      services.AddTransient<ISmsSender, AuthMessageSender>();
+      DependencySetup.Go(services, Configuration);
 
       services.AddInstance<IConfiguration>(Configuration);
     }
@@ -95,6 +104,7 @@ namespace website
 
       SetupExternalAuth(app, Configuration);
 
+      app.UseMiddleware<UserErrorHandlerMiddleware>();
       app.UseMvc(routes =>
             {
               routes.MapRoute(
@@ -125,6 +135,14 @@ namespace website
             options.Authority = authInfo.Get<string>("authority");
             options.DisplayName = authInfo.Get<string>("name");
             options.AuthenticationScheme = options.DisplayName;
+          });
+        }
+        else if (type == "Facebook")
+        {
+          app.UseFacebookAuthentication(options =>
+          {
+            options.AppId = authInfo.Get<string>("appId");
+            options.AppSecret = authInfo.Get<string>("appSecret");
           });
         }
       }
